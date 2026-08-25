@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -14,18 +14,12 @@ function App() {
     const text = input.trim();
     if (!text || loading) return;
     const next = [...messages, { role: 'user' as const, content: text }];
-    setMessages(next);
-    setInput('');
-    setLoading(true);
+    setMessages(next); setInput(''); setLoading(true);
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}` },
-        body: JSON.stringify({ model: MODEL, messages: next, temperature: 0.3 }),
-      });
+      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: next }) });
       const data = await response.json();
-      if (!response.ok) throw new Error(data?.error?.message || 'OpenRouter request failed.');
-      setMessages([...next, { role: 'assistant', content: data.choices?.[0]?.message?.content || 'No response.' }]);
+      if (!response.ok) throw new Error(data?.error || 'MAAR AI request failed.');
+      setMessages([...next, { role: 'assistant', content: data.content || 'No response.' }]);
     } catch (error) {
       setMessages([...next, { role: 'assistant', content: `Sorry — ${error instanceof Error ? error.message : 'Something went wrong.'}` }]);
     } finally { setLoading(false); }
@@ -45,5 +39,4 @@ function App() {
   </div>;
 }
 
-import { useState } from 'react';
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);

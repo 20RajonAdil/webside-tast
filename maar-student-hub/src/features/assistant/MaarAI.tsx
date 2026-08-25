@@ -47,20 +47,9 @@ export function MaarAI() {
       </div>
 
       <div className="flex-1 space-y-3 overflow-y-auto rounded-xl bg-slate-50 p-4 dark:bg-slate-900">
-        {messages.length === 0 && (
-          <div className="py-16 text-center text-slate-500">
-            Ask MAAR AI a question about your studies.
-          </div>
-        )}
+        {messages.length === 0 && <div className="py-16 text-center text-slate-500">Ask MAAR AI a question about your studies.</div>}
         {messages.map((message, index) => (
-          <div
-            key={`${message.role}-${index}`}
-            className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-4 py-3 text-sm ${
-              message.role === 'user'
-                ? 'ml-auto bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                : 'bg-white text-slate-800 shadow-sm dark:bg-slate-800 dark:text-slate-100'
-            }`}
-          >
+          <div key={`${message.role}-${index}`} className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-4 py-3 text-sm ${message.role === 'user' ? 'ml-auto bg-slate-900 text-white dark:bg-white dark:text-slate-900' : 'bg-white text-slate-800 shadow-sm dark:bg-slate-800 dark:text-slate-100'}`}>
             {message.content}
           </div>
         ))}
@@ -68,20 +57,8 @@ export function MaarAI() {
       </div>
 
       <form onSubmit={sendMessage} className="mt-4 flex gap-2">
-        <input
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          placeholder="Ask MAAR AI…"
-          disabled={loading}
-          className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-transparent px-4 py-3 text-sm outline-none focus:border-slate-500 dark:border-slate-700"
-        />
-        <button
-          type="submit"
-          disabled={loading || !input.trim()}
-          className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-slate-900"
-        >
-          Send
-        </button>
+        <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Ask MAAR AI…" disabled={loading} className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-transparent px-4 py-3 text-sm outline-none focus:border-slate-500 dark:border-slate-700" />
+        <button type="submit" disabled={loading || !input.trim()} className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-slate-900">Send</button>
       </form>
       <p className="mt-2 text-xs text-slate-400">Model: {MODEL}</p>
     </section>
